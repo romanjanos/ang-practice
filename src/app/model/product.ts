@@ -4,5 +4,5 @@ export class Product {
     description: string = '';
     price: number = 0;
     featured: boolean = true;
-    actice: boolean = true;
+    active: boolean = true;
 }
