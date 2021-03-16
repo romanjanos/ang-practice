@@ -11,6 +11,8 @@ export class ProductListComponent implements OnInit {
   @Input() products: Product[] | null = [];
   @Output() delete: EventEmitter<Product> = new EventEmitter();
 
+  newProduct: Product = new Product();
+
   constructor() { }
 
   ngOnInit(): void {
@@ -19,5 +21,5 @@ export class ProductListComponent implements OnInit {
   onDelete(product: Product):void {
     this.delete.emit(product);
   }
-
+ 
 }

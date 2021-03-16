@@ -1,1 +1,31 @@
-<app-product-list [products]="productList$ | async" (delete)="deleteItem($event)"></app-product-list>
+<div class="card">
+    <div class="card-header card-header-info">
+        <h4 class="card-title ">Filter</h4>
+        <div class="d-flex p-2 mb-3 filter__group">
+            <input [(ngModel)]="filterPhrase" class="form-control" type="text"
+                placeholder="Keresés..." style="width: 200px;">
+            <select [(ngModel)]="filterKey" class="form-control mr-3 filter__select px-3" style="width: 150px;">
+                <option value="id">id</option>
+                <option value="name">name</option>
+                <option value="description">description</option>
+                <option value="featured">featured</option>
+                <option value="active">active</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th (click)="changeOrder('id')">id</th>
+            <th (click)="changeOrder('name')">name</th>
+            <th (click)="changeOrder('description')">description</th>
+            <th (click)="changeOrder('featured')">featured</th>
+            <th (click)="changeOrder('active')">active</th>
+            <th (click)="changeOrder('actions')">actions</th>
+        </tr>
+    </thead>
+</table>
+
+<app-product-list [products]="productList$ | async | filter:filterPhrase:filterKey | sorter:sortby:sorterDirection" (delete)="deleteItem($event)"></app-product-list>

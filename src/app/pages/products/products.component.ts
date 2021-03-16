@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Product } from '../../model/product';
+import { ProductService } from '../../service/product.service';
 import { Observable } from 'rxjs';
-import { Product } from 'src/app/model/product';
-import { ProductService } from 'src/app/service/product.service';
 
 @Component({
   selector: 'app-products',
@@ -10,18 +10,39 @@ import { ProductService } from 'src/app/service/product.service';
 })
 export class ProductsComponent implements OnInit {
 
-  productList$: Observable<Product[]> = this.productService.list$;
+  productList$: Observable<Product[]> = this.productService.productList$;
 
-  constructor(
-    private productService: ProductService,
-  ) { }
+  // Filter
+  filterPhrase: string = '';
+  filterKey: string = 'name';
+
+  // Sorter
+  sortby: string = 'id';
+  sorterDirection: number = 0;
+
+  constructor(private productService: ProductService) { }
 
   ngOnInit(): void {
-    this.productService.getAll();
+    this.productService.getAll(); 
   }
 
   deleteItem(product: Product): void {
-    this.productService.remove(product);
+    this.productService.remove(product).subscribe(
+      () => {
+        this.productService.getAll();
+      }
+    );
+  }
+
+  changeOrder(param: string): void {
+    if (this.sortby === '' || this.sortby != param) {
+      this.sorterDirection = 1;
+    }
+    if (this.sortby === param) {
+      if (this.sorterDirection === 1) this.sorterDirection = 2;
+      else this.sorterDirection = 1;
+    }
+    this.sortby = param;
   }
 
 }
